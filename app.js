@@ -17,6 +17,27 @@ const MongoStore = require('connect-mongo');
 const path = require('path');
 const mime = require('mime');
 
+
+const cors = require("cors");
+
+
+
+app.use(express.json());
+
+
+app.use(
+    cors({
+        origin: ["http://localhost:8000"],
+        methods: ["GET", "POST"],
+        credentials: true,
+    })
+);
+
+
+mongoose.set('strictQuery', false);
+
+
+
 app.use('/dist', express.static('dist'));
 
 
@@ -78,7 +99,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.get("/", function (req, res) {
-
     res.send('jjj');
 });
 
@@ -152,10 +172,7 @@ app.get('/post/:id', async (req, res) => {
 
 
 
-
-app.listen(process.env.PORT || 6000, function (req, res) {
-    console.log("https://localhost:9000/");
-});
+app.listen(8000, () => console.log('listening on port: 8000'));
 
 
 
