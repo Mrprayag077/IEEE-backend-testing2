@@ -73,104 +73,25 @@ const User = mongoose.model('users', userSchema);
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+
+
+
+
 app.get("/", function (req, res) {
-    // res.send("hello world")
-    res.render("index");
+
+    res.send('jjj');
 });
-
-
-app.get("/aboutus", function (req, res) {
-    // res.send("hello world")
-    res.render("aboutus");
-});
-
-
-app.get("/membership", function (req, res) {
-    // res.send("hello world")
-    res.render("membership");
-});
-
-
-app.get("/contactus", function (req, res) {
-    // res.send("hello world")
-    res.render("aboutus");
-});
-
-
-app.get("/eventreg", function (req, res) {
-    // res.send("hello world")
-    res.render("neweventreg");
-});
-
-app.get("/acheivements", function (req, res) {
-    // res.send("hello world")
-    res.render("acheivement");
-});
-
-
-app.get("/faq", function (req, res) {
-    // res.send("hello world")
-    res.render("faq");
-});
-
-app.get("/acheivements", function (req, res) {
-    // res.send("hello world")
-    res.render("acheivement");
-});
-
-
-
-
-app.get("/formm", function (req, res) {
-    res.render("formm");
-});
-
-
-app.post('/formm', function (req, res) {
-
-    const currentDate = new Date().toISOString();
-
-
-    try {
-        // Create a new event instance
-        const newEvent = new User({
-            _id: new mongoose.Types.ObjectId(),
-            heading: req.body.heading,
-            body: req.body.body,
-            Datee: new Date()
-        });
-
-        // Add the new event to the events array in the main schema and save
-        newEvent.save();
-        res.redirect('/formm?success=true');
-    } catch (err) {
-
-        console.error(err);
-        res.status(500).send('Error adding event');
-    }
-});
-
-
 
 
 app.get("/events", function (req, res) {
-
-
-
     User.find({ "idser": 'eventss' }).sort({ Datee: -1 }).exec(function (err, users) {
-
-        res.render("events", {
-
-            people: [55, 49, 44, 24, 15],
-            usl: users
-
-
-
-        });
-
-
-        // res.send("the sum is"+`<br/><br />email:${s11}<br />password:${c11}<br />`);
-
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Error retrieving events' });
+        } else {
+            console.log(users)
+            res.json(users);
+        }
     });
 });
 
@@ -180,41 +101,31 @@ app.get('/events/:id', async (req, res) => {
     const id_user = req.params.id;
     console.log(id_user);
 
-
     try {
         const event = await User.findById(id_user);
         console.log("hiiiii");
-        res.render('eventinfo', { people: 'sssss', event });
-        console.log(event);
-    } catch (err) {
-        console.log(err);
-        res.send('Error retrieving event details');
+
+        if (event) {
+            res.json(event);
+        } else {
+            res.status(404).json({ error: 'Event not found' });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Error retrieving event details' });
     }
 });
 
 
 
-
-
-
 app.get("/post", function (req, res) {
-
-
-
     User.find({ "idser": 'eventss' }).sort({ Datee: -1 }).exec(function (err, users) {
-
-        res.render("blog-p", {
-
-            people: [55, 49, 44, 24, 15],
-            usl: users
-
-
-
-        });
-
-
-        // res.send("the sum is"+`<br/><br />email:${s11}<br />password:${c11}<br />`);
-
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Error retrieving events' });
+        } else {
+            res.json(users);
+        }
     });
 });
 
@@ -227,53 +138,24 @@ app.get('/post/:id', async (req, res) => {
     try {
         const event = await User.findById(id_user);
         console.log("hiiiii");
-        res.render('eventinfo', { people: 'sssss', event });
-        console.log(event);
-    } catch (err) {
-        console.log(err);
-        res.send('Error retrieving event details');
+
+        if (event) {
+            res.json(event);
+        } else {
+            res.status(404).json({ error: 'Event not found' });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Error retrieving event details' });
     }
 });
 
 
 
-app.listen(process.env.PORT || 5000, function (req, res) {
+
+app.listen(process.env.PORT || 6000, function (req, res) {
     console.log("https://localhost:9000/");
 });
 
 
 
-
-
-
-
-app.get("/signin.sih", jsonParser, function (req, res) {
-    // res.send("hello world")
-
-    res.render("signin");
-    // res.render("signin");
-});
-
-app.post('/signinj', function (req, res) {
-    res.render("signin");
-});
-
-
-app.post('/signinjjj', function (req, res) {
-
-    res.render("index");
-});
-
-// const collection = client.db("tutorial").collection("users");
-// const users = await collection.find({});
-
-
-app.post("/insertt", function (req, res) {
-    res.render("/insertt");
-});
-
-
-app.get("/insertt", function (req, res) {
-    // res.send("hello world")
-    res.render("insertt");
-});
